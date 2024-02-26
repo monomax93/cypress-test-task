@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your average form</title>
+  <!-- Latest Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <style>
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding-top: 50px;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .loading-animation {
+      font-size: 48px;
+      color: white;
+    }
+
+    .loading-animation::after {
+      content: "Loading";
+      animation: loading 1s infinite;
+    }
+
+    @keyframes loading {
+      0% {
+        content: "Loading";
+      }
+
+      33% {
+        content: "Loading.";
+      }
+
+      66% {
+        content: "Loading..";
+      }
+
+      100% {
+        content: "Loading...";
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="text-center">Your average form</h1>
+    <form id="average-form" action="/submit" method="post">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" class="form-control" id="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" id="password" required>
+      </div>
+      <div class="form-group">
+        <label for="gender">Gender:</label><br>
+        <div class="form-check form-check-inline">
+          <input type="radio" class="form-check-input" id="genderMale" name="gender" value="Male" required>
+          <label class="form-check-label" for="genderMale">Male</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input type="radio" class="form-check-input" id="genderFemale" name="gender" value="Female" required>
+          <label class="form-check-label" for="genderFemale">Female</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Hobbies:</label><br>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Hobby</th>
+              <th scope="col">Select</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Reading</td>
+              <td>
+                <input type="checkbox" class="form-check-input" name="hobby" value="Reading">
+              </td>
+            </tr>
+            <tr>
+              <td>Sports</td>
+              <td>
+                <input type="checkbox" class="form-check-input" name="hobby" value="Sports">
+              </td>
+            </tr>
+            <tr>
+              <td>Music</td>
+              <td>
+                <input type="checkbox" class="form-check-input" name="hobby" value="Music">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group">
+        <label for="time">Time:</label>
+        <select class="form-control" id="time" name="time" required>
+          <option value="">Select a time</option>
+          <option value="Morning">Morning</option>
+          <option value="Noon">Noon</option>
+          <option value="Evening">Evening</option>
+        </select>
+      </div>
+      <div class="form-group text-center">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+    <div id="loading" class="overlay d-none">
+      <span class="loading-animation"></span>
+    </div>
+  </div>
+
+  <!-- Latest Bootstrap JS (Optional, only needed if you want to add additional JavaScript) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    const form = document.getElementById('average-form');
+    const loadingDiv = document.getElementById('loading');
+
+    form.addEventListener('submit', function (event) {
+      // Show loading overlay
+      loadingDiv.classList.remove('d-none');
+
+      // Disable form submission
+      event.preventDefault();
+      event.stopPropagation();
+
+      // Simulate delay for 1 second before submitting the form
+      setTimeout(() => {
+        form.submit();
+      }, 2000);
+    });
+  </script>
+</body>
+
+</html>
