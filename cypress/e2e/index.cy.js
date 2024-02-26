@@ -151,7 +151,6 @@ describe('Form submission and result assertion', () => { // doesnt work()
 
 // need test for loading handle after submit
 
-
 // test for all required data for submit(Assert that appropriate error messages are displayed for each required field.) chains and DOM -cannot handle error()
 
 
