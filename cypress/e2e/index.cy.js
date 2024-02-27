@@ -9,6 +9,11 @@ describe('UI test for app', () => {
     cy.visit('/')
   });
   
+  it('It should load the homepage', () => {
+    cy.title().should('eq', 'Your average form');
+    cy.get('h1').should('contain', 'Your average form');
+  });
+
   it('checks if Username and Password fields are fillable', () => {
     // Check if the Username field is fillable
     cy.get('#username').should('be.visible').type('Max').should('have.value', 'Max');
@@ -85,10 +90,29 @@ describe('UI test for app', () => {
     // Submit the form
     cy.get('form').submit();
   });
+
+  it('should display loading animation after form submission', () => {
+    // Visit the form page
+    cy.visit('/');
+
+    // Fill out the form
+    cy.get('#username').type('Max');
+    cy.get('#password').type('1488');
+    cy.get('#genderMale').check();
+    cy.get('input[value="Reading"]').check();
+    cy.get('#time').select('Morning');
+
+    // Submit the form
+    cy.get('form').submit();
+
+    // Assert that the loading animation is displayed
+    cy.get('.overlay').should('be.visible');
+    cy.get('.loading-animation').should('be.visible');
+  });
 });
 
 
-describe('Form Submission Test', () => { // doesnt work()
+describe('Form Submission Test', () => { // doesnt work() 
   it('fills out the form, submits it, and verifies the result page', () => {
     // Visit the form page
     cy.visit('/');
@@ -103,8 +127,6 @@ describe('Form Submission Test', () => { // doesnt work()
     // Submit the form
     cy.get('form').submit();
 
-    cy.wait(5000);
-
     // Assert that the result page is displayed
     cy.url().should('include', '/results');
 
@@ -117,7 +139,7 @@ describe('Form Submission Test', () => { // doesnt work()
 });
 
 
-describe('Form submission and result assertion', () => { // doesnt work()
+describe('Form submission and result assertion', () => { // doesnt work() https://prnt.sc/MXFvBeSiOODY
   it('submits the form and asserts user data on the result page', () => {
     let formData = {}; // Variable to store form data
 
@@ -148,11 +170,6 @@ describe('Form submission and result assertion', () => { // doesnt work()
   });
 });
 
-
-// need test for loading handle after submit
-
-// test for all required data for submit(Assert that appropriate error messages are displayed for each required field.) chains and DOM -cannot handle error()
+// test for all required data for submit(Assert that appropriate error messages are displayed for each required field.) chains and DOM?
 
 // test
-
-
