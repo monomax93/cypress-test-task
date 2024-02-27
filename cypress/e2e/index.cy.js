@@ -108,7 +108,7 @@ describe('UI test for app', () => {
 });
 
 
-describe('Form Submission Test', () => { // doesnt work https://prnt.sc/MXFvBeSiOODY maybe use invoke property for saved data user?
+describe('Form Submission Test', () => { // doesnt work https://prnt.sc/MXFvBeSiOODY there is no handlle result page after submit
   it('fills out the form, submits it, and verifies the result page', () => {
     // Visit the form page
     cy.visit('/');
@@ -134,6 +134,34 @@ describe('Form Submission Test', () => { // doesnt work https://prnt.sc/MXFvBeSi
   });
 });
 
-// test for all required data for submit(Assert that appropriate error messages are displayed for each required field.) chains and DOM?
 
-// test
+describe('Form Submission Test', () => { // doesnt work, used invoke for saving data user 
+  it('fills out the form and saves user data', () => {
+    // Visit the form page
+    cy.visit('/');
+
+    // Fill out the form and save user data
+    cy.get('#username').type('Max').invoke('val').as('username');
+    cy.get('#password').type('1488');
+    cy.get('#genderMale').check();
+    cy.get('input[value="Reading"]').check();
+    cy.get('#time').select('Morning');
+
+    // Submit the form
+    cy.get('form').submit();
+
+    // Assert that the result page is displayed
+    cy.url().should('include', '/results');
+
+    // Assert user data on the result page using the saved username
+    cy.get('@username').then((username) => {
+      cy.contains(`Greetings, ${username}`).should('be.visible'); // Verify username
+    });
+    cy.contains('Gender').next().should('contain', 'Male'); // Verify gender
+    cy.contains('Hobbies').next().should('contain', 'Reading'); // Verify hobbies
+    cy.contains('Time').next().should('contain', 'Morning'); // Verify time
+  });
+});
+
+
+// test for all required data for submit(Assert that appropriate error messages are displayed for each required field.) chains and DOM?
