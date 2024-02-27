@@ -112,7 +112,7 @@ describe('UI test for app', () => {
 });
 
 
-describe('Form Submission Test', () => { // doesnt work() 
+describe('Form Submission Test', () => { // doesnt work https://prnt.sc/MXFvBeSiOODY maybe use invoke property for saved data user?
   it('fills out the form, submits it, and verifies the result page', () => {
     // Visit the form page
     cy.visit('/');
@@ -135,38 +135,6 @@ describe('Form Submission Test', () => { // doesnt work()
     cy.contains('Gender').next().should('contain', 'Male'); // Verify gender
     cy.contains('Hobbies').next().should('contain', 'Reading'); // Verify hobbies
     cy.contains('Time').next().should('contain', 'Morning'); // Verify time
-  });
-});
-
-
-describe('Form submission and result assertion', () => { // doegit commit -m 'Added my project'snt work() https://prnt.sc/MXFvBeSiOODY
-  it('submits the form and asserts user data on the result page', () => {
-    let formData = {}; // Variable to store form data
-
-    // Visit the form page
-    cy.visit('/');
-
-    // Fill out the form and submit
-    cy.get('#username').type('Max').then(($input) => {
-      formData.username = $input.val(); // Save username
-    });
-    cy.get('#password').type('1488');
-    cy.get('#genderMale').check().then(() => {
-      formData.gender = 'Male'; // Save gender
-    });
-    cy.get('input[value="Reading"]').check().then(() => {
-      formData.hobby = 'Reading'; // Save hobby
-    });
-    cy.get('#time').select('Morning').then(() => {
-      formData.time = 'Morning'; // Save time
-    });
-    cy.get('form').submit();
-
-    // Assert user data on result page
-    cy.contains(`Greetings, ${formData.username}`).should('be.visible');
-    cy.contains('Gender').next().should('contain', formData.gender);
-    cy.contains('Hobbies').next().should('contain', formData.hobby);
-    cy.contains('Time').next().should('contain', formData.time);
   });
 });
 
