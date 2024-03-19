@@ -146,14 +146,14 @@
     const loadingDiv = document.getElementById('loading');
 
     form.addEventListener('submit', function (event) {
-      // Show loading overlay
+      // Show loading overlay.
       loadingDiv.classList.remove('d-none');
 
-      // Disable form submission
+      // Disable form submission.
       event.preventDefault();
       event.stopPropagation();
 
-      // Simulate delay for 1 second before submitting the form
+      // Simulate delay for 1 second before submitting the form.
       setTimeout(() => {
         form.submit();
       }, 2000);

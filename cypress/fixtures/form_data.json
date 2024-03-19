@@ -1,0 +1,16 @@
+{
+    "user1": {
+      "username": "Max",
+      "password": "1488",
+      "gender": "Male",
+      "hobbies": ["Sports"],
+      "time": "Morning"
+    },
+    "user2": {
+      "username": "Ri",
+      "password": "@#$234#34",
+      "gender": "Female",
+      "hobbies": ["Music"],
+      "time": "Noon"
+    }
+  }
