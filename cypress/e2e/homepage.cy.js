@@ -75,10 +75,8 @@ describe('UI test for app', () => {
 
   it('should display loading animation after form submission', () => {
     cy.visit('/');
-    
     cy.fixture('form_data.json').then((formData) => {
       const user2 = formData.user2;
-    
       // Fill out the form with user1 data
       homePage.setUsername(user2.username);
       homePage.passwordInput().type(user2.password);
@@ -109,9 +107,7 @@ describe('UI test for app', () => {
       homePage.setUsername(formData.user1.username);
       homePage.passwordInput().type(formData.user1.password);
       homePage.genderMaleCheckbox().check();
-  
       homePage.checkHobbies(formData.user1.hobbies);
-      
       homePage.timeSelect().select(formData.user1.time);
   
       cy.get('form').submit();
