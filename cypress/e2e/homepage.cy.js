@@ -93,7 +93,7 @@ describe('UI test for app', () => {
     cy.get('@formData').then((formData) => {
       homePage.setUsername(formData.user1.username);
       homePage.passwordInput().type(formData.user1.password);
-      homePage.genderMaleCheckbox().check();
+      homePage.checkGender(formData.user1.gender);
       homePage.checkHobbies(formData.user1.hobbies);
       homePage.timeSelect().select(formData.user1.time);
   
