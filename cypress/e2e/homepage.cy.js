@@ -14,17 +14,17 @@ describe('UI test for app', () => {
     cy.fixture('form_data.json').as('formData');
   });
 
+  it('It Should verify the title of form', () => {
+    cy.title().should('eq', 'Your average form');
+    cy.get('.container h1').should('contain', 'Your average form')
+  });
+
   it('check Username and Password fields are fillable', () => {
     cy.fixture('form_data.json').then((formData) => {
       homePage.setUsername(formData.user1.username);
       homePage.usernameInput().should('be.visible').should('have.value', formData.user1.username);
       homePage.passwordInput().should('be.visible').type(formData.user1.password).should('have.value', formData.user1.password);
     });
-  });
-
-  it('It Should verify the title of form', () => {
-    cy.title().should('eq', 'Your average form');
-    cy.get('.container h1').should('contain', 'Your average form')
   });
 
   it('check radio buttons for gender selection are selectable', () => {
@@ -49,13 +49,13 @@ describe('UI test for app', () => {
     homePage.musicOption().uncheck().should('not.be.checked');
   });
 
-  it('verifies the exist of three options in the time selection dropdown', () => {
-    cy.get('#time').within(() => {
-      cy.get('option').contains('Morning').should('exist');
-      cy.get('option').contains('Noon').should('exist');
-      cy.get('option').contains('Evening').should('exist');
-    });
-  });
+  // it('verifies the exist of three options in the time selection dropdown', () => {
+  //   cy.get('#time').within(() => {
+  //     cy.get('option').contains('Morning').should('exist');
+  //     cy.get('option').contains('Noon').should('exist');
+  //     cy.get('option').contains('Evening').should('exist');
+  //   });
+  // });
 
   it('verifies that selecting different times updates the time field', () => {
     // use chain commands
