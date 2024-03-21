@@ -88,7 +88,7 @@ describe('UI test for app', () => {
     });
     
   });
-
+// or this way
   it('fills out the form for user1, submits it, and verifies the result page', function () {
     cy.get('@formData').then((formData) => {
       homePage.setUsername(formData.user1.username);
