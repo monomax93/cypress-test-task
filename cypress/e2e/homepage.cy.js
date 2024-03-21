@@ -103,7 +103,7 @@ describe('UI test for app', () => {
   
       resultsPage.greetings().should('be.visible').and('contain', formData.user1.username);
       resultsPage.gender().should('contain', formData.user1.gender);
-      resultsPage.hobbies().should('contain', formData.user1.hobbies.join(', '));
+      resultsPage.hobbies().should('contain', formData.user1.hobbies);
       resultsPage.time().should('contain', formData.user1.time);
     });
   });
