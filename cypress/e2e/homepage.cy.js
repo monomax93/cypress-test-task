@@ -119,7 +119,6 @@ describe('UI test for app', () => {
     .should('have.value', 'Evening');
   });
 
-
 describe('Negative ', () => {
   it('should display error messages for required fields when form is submitted with empty values', () => {
     cy.visit('/')
