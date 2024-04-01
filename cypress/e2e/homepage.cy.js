@@ -19,20 +19,70 @@ describe('UI test for app', () => {
     cy.get('.container h1').should('contain', 'Your average form')
   });
 
-  it('check Username and Password fields are fillable', () => {
+  it.only('fills out the form for user1, submits it, and verifies the result page', function () {
     cy.fixture('form_data.json').then((formData) => {
-      homePage.setUsername(formData.user1.username);
-      homePage.usernameInput().should('be.visible').should('have.value', formData.user1.username);
-      homePage.passwordInput().should('be.visible').type(formData.user1.password).should('have.value', formData.user1.password);
+        homePage.setUsername(formData.user1.username);
+        homePage.setPassword(formData.user1.password);
+        homePage.selectGender('Female'); // or function selectGender(gender) ??what(
+        homePage.checkHobbies(["Music", "Sports", "Reading"]);
+        homePage.timeSelect().select(formData.user1.time);
+
+        cy.get('form').submit();
+
+        cy.url().should('include', '/results');
+
+        resultsPage.greetings().should('be.visible').and('contain', formData.user1.username);
+        resultsPage.gender().should('contain', "Female");
+        resultsPage.hobbies().then(($hobbies) => {
+            const hobbiesText = $hobbies.text();
+            formData.user1.hobbies.forEach((hobby) => {
+                expect(hobbiesText).to.match(new RegExp(hobby, 'i')); // shit from GPT
+            });
+        });
+        resultsPage.time().should('contain', formData.user1.time);
+    });
+});
+
+  it('should display loading animation after form submission', () => {
+    cy.fixture('form_data.json').then((formData) => {
+      const user2 = formData.user2;
+      // Fill out the form with user2 data
+      homePage.setUsername(user2.username);
+      homePage.setPassword(user2.password);
+      // homePage.checkGender(user2.gender);
+      homePage.genderCheckbox('famale');
+      homePage.checkHobbies(user2.hobbies);
+      homePage.timeSelect().select(user2.time);
+  
+      // Submit the form
+      cy.get('form').submit();
+      
+      // Assert that the loading animation is displayed
+      cy.get('.overlay').should('be.visible');
+      cy.get('.loading-animation').should('be.visible');
     });
   });
 
+
+  // not e2e test!
+  it('2checks  Username and Password fields are fillable', () => {
+    cy.fixture('form_data.json').then((formData) => {
+      const user1 = formData.user1;
+      homePage.setUsername(user1.username);
+      homePage.setPassword(user1.password);
+  
+      homePage.usernameInput().should('be.visible').should('have.value',user1.username);
+      homePage.passwordInput().should('be.visible').should('have.value',user1.password);
+    });
+  });
+  
   it('check radio buttons for gender selection are selectable', () => {
     // Check if the Male radio button is selectable
-    homePage.genderMaleCheckbox().should('be.visible').check().should('be.checked');
-
+    homePage.selectGender('Male');
     // Check if the Female radio button is selectable
-    homePage.genderFemaleCheckbox().should('be.visible').check().should('be.checked');
+    homePage.selectGender('Female');
+    // what was the point of this test? what did you test? that HTML is correct?
+    // why not to test that after selecting data is displayed correctly on the next page?
   });
 
   it('checks possible to select hobby checkboxs', () => {
@@ -49,13 +99,13 @@ describe('UI test for app', () => {
     homePage.musicOption().uncheck().should('not.be.checked');
   });
 
-  // it('verifies the exist of three options in the time selection dropdown', () => {
-  //   cy.get('#time').within(() => {
-  //     cy.get('option').contains('Morning').should('exist');
-  //     cy.get('option').contains('Noon').should('exist');
-  //     cy.get('option').contains('Evening').should('exist');
-  //   });
-  // });
+  it('verifies the exist of three options in the time selection dropdown', () => {
+    cy.get('#time').within(() => {
+      cy.get('option').contains('Morning').should('exist');
+      cy.get('option').contains('Noon').should('exist');
+      cy.get('option').contains('Evening').should('exist');
+    });
+  });
 
   it('verifies that selecting different times updates the time field', () => {
     // use chain commands
@@ -69,42 +119,15 @@ describe('UI test for app', () => {
     .should('have.value', 'Evening');
   });
 
-  it('should display loading animation after form submission', () => {
-    cy.fixture('form_data.json').then((formData) => {
-      const user2 = formData.user2;
-      // Fill out the form with user1 data
-      homePage.setUsername(user2.username);
-      homePage.passwordInput().type(user2.password);
-      homePage.checkGender(user2.gender);
-      homePage.checkHobbies(user2.hobbies);
-      homePage.timeSelect().select(user2.time);
-  
-      // Submit the form
-      cy.get('form').submit();
-      
-      // Assert that the loading animation is displayed
-      cy.get('.overlay').should('be.visible');
-      cy.get('.loading-animation').should('be.visible');
-    });
-    
+
+describe('Negative ', () => {
+  it('should display error messages for required fields when form is submitted with empty values', () => {
+    cy.visit('/')
+    cy.get('form').submit(); // from submit witiout data((
+    cy.get('#username-error').should('be.visible').and('contain', 'Username is required');
+    cy.get('#password-error').should('be.visible').and('contain', 'Password is required');
+    cy.get('#gender-error').should('be.visible').and('contain', 'Gender is required');
+    cy.get('#time-error').should('be.visible').and('contain', 'Time is required');
   });
-// or this way
-  it('fills out the form for user1, submits it, and verifies the result page', function () {
-    cy.get('@formData').then((formData) => {
-      homePage.setUsername(formData.user1.username);
-      homePage.passwordInput().type(formData.user1.password);
-      homePage.checkGender(formData.user1.gender);
-      homePage.checkHobbies(formData.user1.hobbies);
-      homePage.timeSelect().select(formData.user1.time);
-  
-      cy.get('form').submit();
-  
-      cy.url().should('include', '/results');
-  
-      resultsPage.greetings().should('be.visible').and('contain', formData.user1.username);
-      resultsPage.gender().should('contain', formData.user1.gender);
-      resultsPage.hobbies().should('contain', formData.user1.hobbies);
-      resultsPage.time().should('contain', formData.user1.time);
-    });
-  });
+})
 });

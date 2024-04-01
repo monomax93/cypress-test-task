@@ -1,54 +1,73 @@
 
-  export const homePage = {
-    title: () => cy.get('h1'),
-    // Selectors for form inputs
-    usernameInput: () => cy.get('#username'),
-    passwordInput: () => cy.get('#password'),
-    genderMaleCheckbox: () => cy.get('#genderMale'),
-    genderFemaleCheckbox: () => cy.get('#genderFemale'),
-    readingOption: () => cy.get('input[value="Reading"]'),
-    sportsOption: () => cy.get('input[value="Sports"]'),
-    musicOption: () => cy.get('input[value="Music"]'),
-    timeSelect: () => cy.get('#time'),
+export const homePage = {
+  title: () => cy.get('h1'),
+  // Selectors for form inputs
+  usernameInput: () => cy.get('#username'),
+  passwordInput: () => cy.get('#password'),
+  genderMaleCheckbox: () => cy.get('#genderMale'),
+  genderFemaleCheckbox: () => cy.get('#genderFemale'),
+  readingOption: () => cy.get('input[value="Reading"]'),
+  sportsOption: () => cy.get('input[value="Sports"]'),
+  musicOption: () => cy.get('input[value="Music"]'),
+  timeSelect: () => cy.get('#time'),
+
+  // Actions for filling out the form
+  setUsername(username) {
+    this.usernameInput().type(username).should('have.value', username);
+    return this;
+  },
+
+  setPassword(password) {
+    this.passwordInput().type(password).should('have.value', password);
+    return this;
+  },
+
+  // genderCheckbox(gender) {
+  //   if (gender === 'male') {
+  //     this.genderMaleCheckbox().should('be.visible').check();
+  //   } else if (gender === 'female') {
+  //     this.genderFemaleCheckbox().should('be.visible').check();
+  //   }
+  // },
+
+  setGender(gender) {
+    const selector = `#gender${gender}`;
+    cy.get(selector).click();
+    return this;
+  },
+
+  selectGender(gender) {
+    const expectedGenders = ['Male', 'Female', 'Non-binary', 'Dog'];
+    if (!expectedGenders.includes(gender)) {
+      throw new Error(`${gender} is not supported, valid genders: ${expectedGenders}`);
+    }
+    if (gender === 'Male') {
+      cy.get('#genderMale').should('be.visible').check();
+    } else if (gender === 'Female') {
+      cy.get('#genderFemale').should('be.visible').check();
+    } else if (gender === 'Non-binary') {
+      cy.get('#genderNonBinary').should('be.visible').check();
+    } else if (gender === 'Dog') {
+      cy.get('#genderDog').should('be.visible').check();
+    }
+  },
   
-    // Actions for filling out the form
-    setUsername(username) {
-      this.usernameInput().type(username).should('have.value', username);
-      return this;
-    },
-  
-    setPassword(password) {
-      this.passwordInput().type(password).should('have.value', password);
-      return this;
-    },
-  
-    // Check gender based on the value provided
-    checkGender(gender) {
-      if (gender === 'Male') {
-        this.genderMaleCheckbox().check();
-      } else if (gender === 'Female') {
-        this.genderFemaleCheckbox().check();
+  checkHobbies(hobbies) {
+    hobbies.forEach((hobby) => {
+      if (hobby === 'Reading') {
+        this.readingOption().check();
+      } else if (hobby === 'Sports') {
+        this.sportsOption().check();
+      } else if (hobby === 'Music') {
+        this.musicOption().check();
       }
-      return this;
-    },
-  
-    // Check hobbies based on the values provided
-    checkHobbies(hobbies) {
-      hobbies.forEach((hobby) => {
-        if (hobby === 'Reading') {
-          this.readingOption().check();
-        } else if (hobby === 'Sports') {
-          this.sportsOption().check();
-        } else if (hobby === 'Music') {
-          this.musicOption().check();
-        }
-      });
-      return this;
-    },
-  
-    // Select time from dropdown
-    selectTime(time) {
-      this.timeSelect().select(time);
-      return this;
-    },
-  };
+    });
+    return this;
+  },
+
+  // Select time from dropdown
+  selectTime(time) {
+    this.timeSelect().select(time);
+    return this;
+  }
+};

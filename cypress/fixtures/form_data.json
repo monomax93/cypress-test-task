@@ -3,7 +3,7 @@
       "username": "Max",
       "password": "1488",
       "gender": "Male",
-      "hobbies": ["Sports"],
+      "hobbies": ["Music","Sports","Reading"],
       "time": "Morning"
     },
     "user2": {
