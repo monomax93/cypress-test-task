@@ -36,11 +36,8 @@ export const homePage = {
       throw new Error(`${gender} is not supported, valid genders: ${expectedGenders}`);
     }
     cy.get('#gender').contains(gender).click() ;
-    // if (gender === 'Male') {
-    //   cy.get('#genderMale').should('be.visible').check();
-    // } else if (gender === 'Female') {
-    //   cy.get('#genderFemale').should('be.visible').check();
   },
+  
 // some way for selector 
   // setGender(gender) {
   //   const selector = `#gender${gender}`; //'#genderMale'
