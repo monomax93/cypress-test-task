@@ -30,27 +30,23 @@ export const homePage = {
   //   }
   // },
 
-  setGender(gender) {
-    const selector = `#gender${gender}`;
-    cy.get(selector).click();
-    return this;
-  },
-
   selectGender(gender) {
-    const expectedGenders = ['Male', 'Female', 'Non-binary', 'Dog'];
+    const expectedGenders = ['Male', 'Female'];
     if (!expectedGenders.includes(gender)) {
       throw new Error(`${gender} is not supported, valid genders: ${expectedGenders}`);
     }
-    if (gender === 'Male') {
-      cy.get('#genderMale').should('be.visible').check();
-    } else if (gender === 'Female') {
-      cy.get('#genderFemale').should('be.visible').check();
-    } else if (gender === 'Non-binary') {
-      cy.get('#genderNonBinary').should('be.visible').check();
-    } else if (gender === 'Dog') {
-      cy.get('#genderDog').should('be.visible').check();
-    }
+    cy.get('#gender').contains(gender).click() ;
+    // if (gender === 'Male') {
+    //   cy.get('#genderMale').should('be.visible').check();
+    // } else if (gender === 'Female') {
+    //   cy.get('#genderFemale').should('be.visible').check();
   },
+// some way for selector 
+  // setGender(gender) {
+  //   const selector = `#gender${gender}`; //'#genderMale'
+  //   cy.get(selector).click();
+  //   return this;
+  // },
   
   checkHobbies(hobbies) {
     hobbies.forEach((hobby) => {
